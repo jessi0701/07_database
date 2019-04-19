@@ -1,0 +1,20 @@
+{% extends 'movie/base.html' %}
+{% load bootstrap4 %}
+{% block bodyblock %}
+    <h1>{{movie.title}}</h1>
+    <h2>{{movie.audience}}</h2>
+    <h3><img src="{{movie.poster_url}}"></h3>
+    <h4>{{movie.description}}</h4>
+    <h5>{{movie.genre_id}}</h5>
+    <a href="/movies">목록</a>
+    <a href="mailto:">수정</a>
+    <a href="/movies/{{movie.id}}/delete">삭제</a>
+    <form action="{% url 'movie:new_score' movie.id %}" method='post'>
+        {% csrf_token %}
+        {% bootstrap_form score_form %}
+        <input type="submit" value="Submit"/>
+    </form>
+    {% for score in movie.score_set.all %}
+    <h3>{{score.content}}  {{score.score}}    <a class="btn btn-danger" href="{% url 'movie:delete_score' movie.id score.id %}">삭제</a></h3> 
+    {% endfor %}
+{% endblock %}
